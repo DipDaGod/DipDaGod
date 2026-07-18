@@ -37,8 +37,6 @@ CONFIG: dict = {
         ("Name", "Dhairya Khetan"),
         ("Role", "Student Coder"),
         ("Education", "Class 11 • Computer Science"),
-        ("Location", "Kolkata, India"),
-        ("Status", "Building > Browsing"),
     ],
 
     "sections": [
@@ -52,22 +50,6 @@ CONFIG: dict = {
             },
         },
         {
-            "title": "Now",
-            "bullets": [
-                "Improving my programming skills",
-                "Building personal projects",
-                "Learning modern web development",
-            ],
-        },
-        {
-            "title": "Vibe",
-            "bullets": [
-                "Curious Coder",
-                "Always Building",
-                "Learning by Creating",
-            ],
-        },
-        {
             "title": "Interests",
             "bullets": [
                 "Web Development",
@@ -78,7 +60,7 @@ CONFIG: dict = {
         {
             "title": "Links",
             "kv": {
-                "All my projects": "dipdagod.github.io/projects-showcase",
+                "Showcase": "dipdagod.github.io/projects-showcase",
             },
         },
     ],
