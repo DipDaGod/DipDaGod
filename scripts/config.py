@@ -28,9 +28,9 @@ INFO_CARD = {
 
     # Shown as plain rows right under the header line.
     "identity": [
-        ("Name", "<YOUR_NAME>"),
-        ("Role", "<YOUR_ROLE>"),
-        ("Education", "<YOUR_EDUCATION>"),
+        ("Name", "Dhairya Khetan"),
+        ("Role", "Student Coder"),
+        ("Education", "Class 11 • Computer Science"),
     ],
 
     # Each section is either a {"kv": {...}} block (key/value rows) or a
@@ -40,18 +40,18 @@ INFO_CARD = {
         {
             "title": "Languages",
             "kv": {
-                "<LANGUAGE_1>": "<PROFICIENCY_1>",
-                "<LANGUAGE_2>": "<PROFICIENCY_2>",
-                "<LANGUAGE_3>": "<PROFICIENCY_3>",
-                "<LANGUAGE_4>": "<PROFICIENCY_4>",
+                "HTML": "Advanced",
+                "Python": "Intermediate",
+                "CSS": "Beginner",
+                "JavaScript": "Beginner",
             },
         },
         {
             "title": "Interests",
             "bullets": [
-                "<INTEREST_1>",
-                "<INTEREST_2>",
-                "<INTEREST_3>",
+                "Web Development",
+                "Football",
+                "Fun Side Projects",
             ],
         },
         {
@@ -59,8 +59,7 @@ INFO_CARD = {
             # portfolio, socials, whatever you want visible on the card.
             "title": "Links",
             "kv": {
-                "GitHub": f"github.com/{GITHUB_USERNAME}",
-                "<LINK_LABEL>": "<LINK_VALUE>",
+                "All my Projects": "DipDaGod/projects-showcase",
             },
         },
     ],
