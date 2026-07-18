@@ -20,7 +20,7 @@
 <h3><code>~ $ ./links.sh</code></h3>
 <p><b><YOUR_TITLE></b></p>
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-dhairya-khetan-aa6392364-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/dhairya-khetan-aa6392364)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-dhairyakhetan-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/dhairya-khetan-aa6392364)
 [![Instagram](https://img.shields.io/badge/Instagram-dhairyakhetan-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/dhairyakhetan)
 
 <br>
