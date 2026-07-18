@@ -30,7 +30,7 @@ jobs:
           pip install -r scripts/requirements.txt
 
       - name: Delete old contribution graph
-        run: rm -f contrib-heatmap.svg
+        run: rm -f contributions.svg
 
       - name: Generate new contribution graph
         run: python scripts/update_contributions.py
@@ -41,4 +41,4 @@ jobs:
           commit_message: "chore: refresh contribution graph [skip ci]"
           file_pattern: |
             scripts/data/contributions.json
-            contrib-heatmap.svg
+            contributions.svg

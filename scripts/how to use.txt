@@ -1,8 +1,0 @@
-RUN ALL OF THE FOLLOWING IN THE MAIN GITHUB/DipDaGod FOLDER
-
-To make new info card: python scripts/make_info_card.py
-
-To manually update contributions: python scripts/update_contributions.py
-
-To make ascii image: python scripts/make_ascii_svg.py
-(image will be named "source_photo" any file type, not case sensitive in the folder where the command is ran)
