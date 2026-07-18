@@ -1,4 +1,4 @@
-name: Update Contribution Graph
+name: Update Contribution Graf
 
 on:
   schedule:
