@@ -7,12 +7,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 
 scripts = [
-    HERE / "fetch_contributions.py",
-    HERE / "render_heatmap_svg.py",
+    HERE / "yep" / "fetch_contributions.py",
+    HERE / "yep" / "render_heatmap_svg.py",
 ]
 
 for script in scripts:
-    print(f"Running {script.name}...")
+    print(f"Running {script.relative_to(HERE)}...")
     result = subprocess.run([sys.executable, str(script)])
     if result.returncode != 0:
         sys.exit(result.returncode)
