@@ -2,7 +2,7 @@ name: Update Contribution Graph
 
 on:
   schedule:
-    - cron: "17 6 * * *"   # Daily at 06:17 UTC
+    - cron: "17 6 * * *"   
   workflow_dispatch:
   push:
     branches:
