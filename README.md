@@ -1,16 +1,27 @@
-## Hi there 👋
+<div align="center">
+<!-- hero: monochrome ASCII portrait (types in) beside a neofetch-style info
+     panel. regenerate portrait: python scripts/prep_photo.py <photo> &&
+     python scripts/make_ascii_svg.py ; info panel: python scripts/make_info_card.py -->
+<!-- animated contribution graph: real data, boxes reveal cell by cell
+     (regenerated daily by .github/workflows/update-profile-art.yml) -->
+<h3><code>~ $ ./contributions.sh</code></h3>
+<img src="./contrib-heatmap.svg" width="860" alt="GitHub contribution graph — auto-refreshed daily" />
+<br>
+<br>
+<h3><code>~ $ whoami</code></h3>
+<table>
+<tr>
+<td valign="top"><img src="./avi-ascii.svg" width="370" alt="ASCII portrait" /></td>
+<td valign="top"><img src="./info-card.svg" width="490" alt="Experience, stack, highlights" /></td>
+</tr>
+</table>
+<br>
+<br>
+<h3><code>~ $ ./links.sh</code></h3>
+<p><b><YOUR_TITLE></b></p>
 
-<!--
-**DipDaGod/DipDaGod** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-dhairya-khetan-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/dhairya-khetan-aa6392364)
+[![Instagram](https://img.shields.io/badge/Instagram-dhairyakhetan-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/dhairyakhetan)
 
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+<br>
+</div>
