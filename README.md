@@ -17,7 +17,7 @@
 </table>
 <br>
 <br>
-<h3><code>~ $ ./links.sh</code></h3>
+<h3><code>~ $ ./links</code></h3>
 <p><b><YOUR_TITLE></b></p>
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-dhairyakhetan-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/dhairya-khetan-aa6392364)
