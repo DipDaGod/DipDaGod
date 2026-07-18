@@ -1,20 +1,14 @@
 #!/usr/bin/env python3
-"""
-Render data/contributions.json (produced by fetch_contributions.py) as a proper
-GitHub-style contribution heatmap SVG: a grid of rounded, colored BOXES in the
-classic 53-week x 7-day calendar, revealed once with a diagonal line-after-line
-slide-down (CSS keyframes, plays on load then freezes -- no looping "glow"), a
-Less->More legend, and a real stats footer.
 
-Run by .github/workflows/update-profile-art.yml after fetch_contributions.py.
-"""
 import datetime
 import json
 import os
 
 HERE = os.path.dirname(__file__)
 IN_PATH = os.path.join(HERE, "..", "data", "contributions.json")
-OUT_PATH = os.path.join(HERE, "..", "contrib-heatmap.svg")
+OUT_PATH = os.path.abspath(
+    os.path.join(HERE, "..", "..", "contrib-heatmap.svg")
+)
 
 # GitHub-ish green ramp: empty -> brightest. Level 5 is a brighter neon top end.
 PALETTE = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353", "#69f0a0"]

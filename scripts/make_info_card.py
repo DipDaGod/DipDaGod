@@ -1,23 +1,3 @@
-"""
-make_info_card.py
-------------------
-Pipeline 2 (Info Card).
-
-CONFIG (below) -> info-card.svg
-
-A neofetch-style terminal panel: a host line, identity key/value rows, then
-titled sections (key/value rows or bullet highlights) - NOT GitHub stats,
-since the contribution heatmap already covers those. Everything shown comes
-from CONFIG; add or remove a section there and the layout adjusts itself.
-
-Each row fades in and rises slightly on a short stagger (SMIL animate +
-animateTransform, both fill="freeze", no repeatCount) so the panel feels
-like it's printing - then holds still.
-
-Set STATIC=1 as an environment variable to emit the fully-revealed frame
-with no animation, handy for a quick local preview.
-"""
-
 from __future__ import annotations
 
 import os
