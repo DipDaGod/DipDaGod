@@ -28,8 +28,6 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from utils import escape_svg_text, stagger_delays, svg_document, write_text_file
-
 # ---------------------------------------------------------------------------
 # Photo discovery / prep constants
 # ---------------------------------------------------------------------------
@@ -59,6 +57,42 @@ BACKGROUND_COLOR = "#0d1117"  # GitHub dark-mode background, so it blends in
 
 ROW_REVEAL_DURATION = 0.45  # seconds for one row's wipe-in
 ROW_STAGGER_STEP = 0.05  # seconds between each row starting
+
+
+def escape_svg_text(text: str) -> str:
+    """Escape characters that would break XML/SVG if placed inside a tag body."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def write_text_file(path: str | Path, content: str) -> None:
+    """Write text to `path`, creating parent directories if needed."""
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(content, encoding="utf-8")
+
+
+def svg_document(
+    width: int, height: int, body: str, *, extra_defs: str = "", background: str | None = None
+) -> str:
+    """Minimal <svg> wrapper: optional defs + optional flat background + body."""
+    defs_block = f"<defs>{extra_defs}</defs>" if extra_defs else ""
+    bg_rect = f'<rect width="{width}" height="{height}" fill="{background}"/>' if background else ""
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}">{defs_block}{bg_rect}{body}</svg>'
+    )
+
+
+def stagger_delays(count: int, start: float = 0.0, step: float = 0.08) -> list[float]:
+    """Return `count` sequential animation begin-times (in seconds), used so
+    rows reveal one after another instead of all at once.
+    """
+    return [round(start + i * step, 3) for i in range(count)]
 
 
 def find_source_photo(explicit_path: str | None) -> Path:

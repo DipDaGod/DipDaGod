@@ -10,7 +10,6 @@ Run with: python scripts/update_contributions.py (from the repo root)
 from __future__ import annotations
 
 import datetime
-import json
 import os
 import re
 import sys
@@ -20,7 +19,6 @@ import requests
 from bs4 import BeautifulSoup
 
 import config
-from lib.svg_common import MONO_FONT_STACK, escape_svg_text, terminal_card_frame, terminal_titlebar
 
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parent
@@ -28,7 +26,6 @@ REPO_ROOT = HERE.parent
 USERNAME = os.environ.get("GH_PROFILE_USER", config.GITHUB_USERNAME)
 URL = f"https://github.com/users/{USERNAME}/contributions"
 
-JSON_OUT_PATH = HERE / "data" / "contributions.json"
 SVG_OUT_PATH = REPO_ROOT / "contributions.svg"
 
 # ---------------------------------------------------------------------------
@@ -126,6 +123,54 @@ def build_data(days: list[dict]) -> dict:
 # Step 2: render the heatmap SVG
 # ---------------------------------------------------------------------------
 
+MONO_FONT_STACK = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+DOT_COLORS = ["#ff5f56", "#ffbd2e", "#27c93f"]  # macOS-style traffic-light buttons
+
+
+def escape_svg_text(text: str) -> str:
+    """Escape characters that would break XML/SVG if placed inside a tag body."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def terminal_card_frame(width: float, height: float, *, bg_top: str, bg_bottom: str,
+                         frame_color: str, gradient_id: str = "cardBg",
+                         frame_opacity: float = 1.0) -> str:
+    """Rounded gradient background + border shared by every 'terminal card' SVG."""
+    opacity_attr = f' stroke-opacity="{frame_opacity}"' if frame_opacity != 1.0 else ""
+    return (
+        f'<defs><linearGradient id="{gradient_id}" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0" stop-color="{bg_top}"/><stop offset="1" stop-color="{bg_bottom}"/>'
+        f"</linearGradient></defs>"
+        f'<rect width="{width}" height="{height}" rx="12" fill="url(#{gradient_id})"/>'
+        f'<rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="12" '
+        f'fill="none" stroke="{frame_color}"{opacity_attr}/>'
+    )
+
+
+def terminal_titlebar(width: float, titlebar_h: float, padding: float, title_text: str, *,
+                       muted_color: str, frame_color: str, dot_colors=DOT_COLORS,
+                       line_opacity: float = 1.0) -> str:
+    """Separator line + traffic-light dots + centered title, used by every
+    'terminal card' SVG's header bar.
+    """
+    opacity_attr = f' stroke-opacity="{line_opacity}"' if line_opacity != 1.0 else ""
+    line = f'<line x1="0" y1="{titlebar_h}" x2="{width}" y2="{titlebar_h}" stroke="{frame_color}"{opacity_attr}/>'
+    dots = "".join(
+        f'<circle cx="{padding + i * 16}" cy="{titlebar_h / 2}" r="5" fill="{c}"/>'
+        for i, c in enumerate(dot_colors)
+    )
+    label = (
+        f'<text x="{width / 2}" y="{titlebar_h / 2 + 4}" fill="{muted_color}" '
+        f'font-size="12" text-anchor="middle">{title_text}</text>'
+    )
+    return line + dots + label
+
+
 PALETTE = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353", "#69f0a0"]  # empty -> brightest
 
 CELL = 12
@@ -189,7 +234,7 @@ def render(data: dict) -> str:
             break
 
     canvas_w = PAD + LEFT_LABEL_W + art_w + PAD
-    stats_h = 88
+    stats_h = 40  # just one line of text now, instead of legend + two stat rows
     canvas_h = TITLEBAR_H + TOP_LABEL_H + art_h + stats_h + PAD
     grid_top = TITLEBAR_H + TOP_LABEL_H
     grid_left = PAD + LEFT_LABEL_W
@@ -234,38 +279,13 @@ def render(data: dict) -> str:
                 f'<title>{date_s}: {count} contribution{plural}</title></rect>'
             )
 
-    # legend: Less [][][][][] More
-    leg_y = grid_top + art_h + 6
-    leg_x = canvas_w - PAD - (len(PALETTE) * (CELL - 1) + 70)
-    parts.append(f'<text x="{leg_x}" y="{leg_y + CELL * 0.8:.1f}" fill="{MUTED_COLOR}" '
-                  f'font-size="10" text-anchor="end">Less</text>')
-    lx = leg_x + 8
-    for color in PALETTE:
-        parts.append(f'<rect x="{lx}" y="{leg_y}" width="{CELL - 1}" height="{CELL - 1}" rx="2.2" fill="{color}"/>')
-        lx += CELL
-    parts.append(f'<text x="{lx + 4}" y="{leg_y + CELL * 0.8:.1f}" fill="{MUTED_COLOR}" font-size="10">More</text>')
-
-    sep_y = leg_y + CELL + 14
-    parts.append(f'<line x1="0" y1="{sep_y}" x2="{canvas_w}" y2="{sep_y}" '
-                  f'stroke="{FRAME_COLOR}" stroke-opacity="0.25"/>')
-
-    cs, ls = data["current_streak"]["length"], data["longest_streak"]["length"]
-    total, best, rng = data["total_contributions"], data["best_day"], data["range"]
-
-    ly = sep_y + 24
+    # Just the total, directly under the grid - no legend, no streaks, no
+    # best day, no date range.
+    total = data["total_contributions"]
+    ly = grid_top + art_h + 30
     parts.append(f'<text x="{PAD}" y="{ly}" font-size="13" fill="{GREEN_COLOR}">'
                  f'<tspan font-weight="700">{total:,}</tspan>'
                  f'<tspan fill="{MUTED_COLOR}"> contributions in the last year</tspan></text>')
-    parts.append(f'<text x="{canvas_w - PAD}" y="{ly}" font-size="12" fill="{MUTED_COLOR}" '
-                 f'text-anchor="end">{rng["start"]} &#8594; {rng["end"]}</text>')
-    ly += 24
-    parts.append(f'<text x="{PAD}" y="{ly}" font-size="13" fill="{MUTED_COLOR}">current streak '
-                 f'<tspan fill="{ACCENT_COLOR}" font-weight="700">{cs} days</tspan>'
-                 f'<tspan fill="{MUTED_COLOR}">   &#183;   longest </tspan>'
-                 f'<tspan fill="{ACCENT_COLOR}" font-weight="700">{ls} days</tspan></text>')
-    parts.append(f'<text x="{canvas_w - PAD}" y="{ly}" font-size="12" fill="{MUTED_COLOR}" text-anchor="end">'
-                 f'best day <tspan fill="{GOLD_COLOR}" font-weight="700">{best["count"]}</tspan> '
-                 f'on {best["date"]}</text>')
 
     parts.append("</svg>")
     return "".join(parts)
@@ -279,10 +299,7 @@ def render(data: dict) -> str:
 def main() -> None:
     print(f"Fetching contribution calendar for {USERNAME}...")
     data = build_data(fetch_days())
-
-    JSON_OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    JSON_OUT_PATH.write_text(json.dumps(data, indent=2))
-    print(f"wrote {JSON_OUT_PATH}: {data['total_contributions']} contributions, "
+    print(f"{data['total_contributions']} contributions, "
           f"current streak {data['current_streak']['length']}, "
           f"longest streak {data['longest_streak']['length']}")
 
