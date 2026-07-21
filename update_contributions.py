@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-Fetches your GitHub contribution calendar and renders it straight into
-contributions.svg. This used to be two scripts (fetch_contributions.py +
-render_heatmap_svg.py) in a "yep" subfolder -- now merged into one file.
-
-Run with: python scripts/update_contributions.py (from the repo root)
-"""
 
 from __future__ import annotations
 
@@ -18,12 +11,10 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-import config
-
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parent
 
-USERNAME = os.environ.get("GH_PROFILE_USER", config.GITHUB_USERNAME)
+USERNAME = os.environ.get("GH_PROFILE_USER", "DipDaGod")
 URL = f"https://github.com/users/{USERNAME}/contributions"
 
 SVG_OUT_PATH = REPO_ROOT / "contributions.svg"
