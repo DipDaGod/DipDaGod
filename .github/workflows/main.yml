@@ -5,11 +5,12 @@ name: Update profile art
 # regenerates ascii-img.svg or info-card.svg, which are edited/regenerated
 # by hand.
 #
-# Sequence per run:
-#   1. Delete contributions.svg and commit that deletion.
-#   2. Run scripts/update_contributions.py to fetch fresh data and render
-#      a brand-new contributions.svg.
-#   3. Commit the newly generated files.
+# One commit per run: delete the stale contributions.svg, regenerate it,
+# then commit both the deletion and the new file together. The commit is
+# explicitly authored as github-actions[bot] (not your own account), so
+# this workflow's own commits never count towards YOUR contribution graph -
+# otherwise the bot's commits would get scraped back into the very heatmap
+# they're drawing, inflating it forever.
 "on":
   schedule:
     - cron: "17 6 * * *"   # ~06:17 UTC daily
@@ -36,17 +37,14 @@ jobs:
       - name: Delete existing contribution graph
         run: rm -f contributions.svg
 
-      - name: Commit deletion
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: remove stale contribution graph [skip ci]"
-          file_pattern: "contributions.svg"
-
       - name: Regenerate contribution graph
         run: python scripts/update_contributions.py
 
-      - name: Commit regenerated graph
+      - name: Commit changes as github-actions[bot]
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh contribution graph [skip ci]"
           file_pattern: "scripts/data/contributions.json contributions.svg"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
