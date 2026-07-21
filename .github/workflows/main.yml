@@ -36,7 +36,7 @@ jobs:
         run: rm -f contributions.svg
 
       - name: Regenerate contribution graph
-        run: python scripts/update_contributions.py
+        run: python update_contributions.py
 
       - name: Commit changes as github-actions[bot]
         uses: stefanzweifel/git-auto-commit-action@v5
