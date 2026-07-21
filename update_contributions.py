@@ -11,8 +11,7 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-HERE = Path(__file__).resolve().parent
-REPO_ROOT = HERE.parent
+REPO_ROOT = Path(__file__).resolve().parent
 
 USERNAME = os.environ.get("GH_PROFILE_USER", "DipDaGod")
 URL = f"https://github.com/users/{USERNAME}/contributions"
