@@ -26,8 +26,12 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
-
+        run: |
+          pip install pillow==10.4.0
+          pip install numpy==1.26.4
+          pip install opencv-python==4.10.0.84
+          pip install requests==2.32.3
+          pip install beautifulsoup4==4.12.3
       - name: Delete existing contribution graph
         run: rm -f contributions.svg
 
